@@ -1,0 +1,9 @@
+por arreglar:
+
+
+<label for="categoria_id">Categoría:</label>
+                            <select name="categoria_id" class="form-control">
+                                {% for categoria in lista_de_categorias %}
+                                    <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                                {% endfor %}
+                            </select>

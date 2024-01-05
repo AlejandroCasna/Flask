@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <h1 class="display-4 text-center mt-4 titulo">¡Hola, {{ usuario_actual.nombre }}!</h1>
+    <title>Detalles de la Tarea</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css"
+        integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #343a40;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        div.container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Detalles de la Tarea</h1>
+        <ul>
+            <li><strong>Contenido:</strong> {{ tarea.contenido }}</li>
+            <li><strong>Descripción:</strong> {{ tarea.descripcion }}</li>
+            <li><strong>Fecha Límite:</strong> {{ tarea.fecha_limite.strftime('%Y-%m-%d %H:%M') if tarea.fecha_limite else 'No especificada' }}</li>
+            <li><strong>Estado:</strong> {{ 'Completada' if tarea.hecha else 'Pendiente' }}</li>
+        </ul>
+        <a href="{{ url_for('home') }}">Volver a la lista de tareas</a>
+    </div>
+</body>
+
+</html>

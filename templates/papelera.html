@@ -1,0 +1,42 @@
+<!-- papelera.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Papelera de Reciclaje</title>
+    <!-- Tu enlace a estilos, scripts, etc. -->
+</head>
+<body>
+    <h1>Papelera de Reciclaje</h1>
+    <h1 class="display-4 text-center mt-4 titulo">¡Hola, {{ usuario_actual.nombre }}!</h1>
+    <ul>
+        
+        {% for tarea in tareas_eliminadas %}
+            <li>
+                {{ tarea.contenido }}
+                - Categoría: {{ tarea.categoria.nombre }}
+                <br>
+                <strong>Fecha de Creación:</strong> {{ tarea.fecha_creacion }}
+                <br>
+                <strong>Fecha Límite:</strong> {{ tarea.fecha_limite }}
+                <br>
+                <strong>Descripción:</strong> {{ tarea.descripcion }}
+                <br>
+                <a href="{{ url_for('restaurar_tarea', id=tarea.id) }}">Restaurar Tarea</a>
+                <a href="{{ url_for('eliminar_definitivamente', id=tarea.id) }}" class="rojo">Eliminar definitivamente</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+<body>
+    
+
+    <ul>
+        <!-- Lista de tareas eliminadas ... -->
+    </ul>
+
+    <!-- Agregar un botón o enlace para volver a la página principal -->
+    <a href="{{ url_for('home') }}" class="btn btn-primary">Volver a la página principal</a>
+</body>
+</html>

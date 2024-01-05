@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <h1 class="display-4 text-center mt-4 titulo">¡Hola, {{ usuario_actual.nombre }}!</h1>
+    <title>App Gestor de Tareas</title>
+
+    <!-- hoja de estilo local-->
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    
+    <!--plantilla bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-yQfV5U4F3UnF/6eVzAow6J5P6w3+xLVV/Pa8b8C4dIbbVd+3QFLW1B3DdW9fP6X" crossorigin="anonymous"></script>
+
+    <!-- google fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https: //fonts.googleapis.com/css2? family= Permanente+Marcador & display=swap" rel="stylesheet">   
+
+    <!-- Bootstrap CSS -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/sketchy/bootstrap.min.css" integrity="sha384-RxqHG2ilm4r6aFRpGmBbGTjsqwfqHOKy1ArsMhHusnRO47jcGqpIQqlQK/kmGy9R" crossorigin="anonymous"> -->
+
+
+</head>
+<body>  
+    <div class="col-md-2">
+        <!-- Formulario de inicio de sesión -->
+        <form method="POST" action="{{ url_for('login') }}" class="p-3">
+            <!-- Campos del formulario -->
+            <div class="form-group">
+                <label for="email">Correo electrónico:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <!-- Botones para enviar el formulario o redirigir al registro -->
+            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+            <a href="{{ url_for('registro') }}" class="btn btn-link">Registrarse</a>
+        </form>
+    </div>
+    <main class="container p-4">
+        {% if usuario_actual %}
+        <h1 class="display-4 text-center mt-4 titulo">¡Hola, {{ usuario_actual.nombre }}!</h1>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-4 offset-md-4 my-auto">
+                <div class="card">
+                    <div class="card-header">
+                        
+                        <form method="POST" action="{{ url_for('crear') }}">
+                            <label for="contenido_tarea">Contenido de la tarea:</label>
+                            <input type="text" name="contenido_tarea" placeholder="Tarea" class="form-control" autofocus required>
+                        
+                            <label for="descripcion_tarea">Descripción de la tarea:</label>
+                            <textarea name="descripcion_tarea" placeholder="Descripción" class="form-control"></textarea>
+                        
+                            <label for="fecha_limite">Fecha límite:</label>
+                            <input type="datetime-local" name="fecha_limite">
+                        
+                            
+                            <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+
+
+
+
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <form method="GET" action="{{ url_for('filtrar_tareas') }}" class="texto-blanco">
+                                <label for="filtro_estado" class="texto-blanco centrado">Filtrar por Estado:</label>
+                                <select name="filtro_estado" class="form-control">
+                                    <option value="todas">Todas</option>
+                                    <option value="pendientes">Pendientes</option>
+                                    <option value="completadas">Completadas</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                            </form>
+                            {% for tarea in lista_de_tareas %}
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <span class="{% if tarea.hecha == true %} tarea_hecha {% endif %}">
+                                                {{ tarea.contenido }} - Categoría: {{ tarea.categoria.nombre }}
+                                                <div class="dropdown">
+                                                    
+                                                    <div id="dropdown{{ tarea.id }}" class="dropdown-content">
+                                                        <div class="action-buttons">
+                                                            <p><strong>Fecha de Creación:</strong> {{ tarea.fecha_creacion }}</p>
+                                                            <p><strong>Fecha Límite:</strong> {{ tarea.fecha_limite }}</p>
+                                                            <p><strong>Descripción:</strong> {{ tarea.descripcion }}</p>
+                                                        </div>
+                                                        <a href="/tarea-hecha/{{ tarea.id }}" class="verde">Marcar como completada</a>
+                                                        
+                                                        <a href="/eliminar-tarea/{{ tarea.id }}" class="rojo">Eliminar tarea</a>
+                                                    
+                                                        <a href="{{ url_for('editar_tarea', tarea_id=tarea.id) }}">Editar Tarea</a>
+
+                                                    </div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                            <a href="{{ url_for('papelera_de_reciclaje') }}" class="btn btn-danger btn-block">
+                                <i class="fas fa-trash"></i> Papelera de Reciclaje
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
